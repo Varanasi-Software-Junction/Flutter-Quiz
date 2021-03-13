@@ -3,18 +3,116 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(VSJApp());
+  runApp(VSJQuizApp());
 }
-class VSJApp extends StatelessWidget
-{
+
+class VSJQuizApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return MaterialApp(
-home:Scaffold(
-  backgroundColor: Colors.blueAccent,
+      home: Scaffold(
 
-    ),
+        appBar: AppBar(
+          backgroundColor: Colors.teal,
+          title: Card(
+              child: Text(
+                "Quiz App",
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  backgroundColor: Colors.teal,
+                ),
+              )),
+          centerTitle: true,
+        ),
+
+
+
+        backgroundColor: Colors.grey.shade900,
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            child: VSJQuiz(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+
+
+
+class VSJQuiz extends StatefulWidget {
+  @override
+  _VSJQuizState createState() => _VSJQuizState();
+}
+
+class _VSJQuizState extends State<VSJQuiz> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Expanded(
+          flex: 5,
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Center(
+              child: Text(
+                'Question Will Come Here',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 25.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(15.0),
+            child: FlatButton(
+              textColor: Colors.white,
+              color: Colors.green,
+              child: Text(
+                'True',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                ),
+              ),
+              onPressed: () {
+                print("Submitted True");
+              },
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(15.0),
+            child: FlatButton(
+              color: Colors.red,
+              child: Text(
+                'False',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () {
+                print("Submitted False");
+              },
+            ),
+          ),
+        ),
+        //TODO: Add a Row here as your score keeper
+      ],
     );
   }
 }
