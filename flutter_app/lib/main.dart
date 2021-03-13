@@ -52,7 +52,15 @@ class VSJQuiz extends StatefulWidget {
 }
 
 class _VSJQuizState extends State<VSJQuiz> {
-  List scores=[];
+  List<Widget> scores=[
+    Icon(
+    Icons.check,
+    color: Colors.green
+  )
+    ,Icon(
+      Icons.close,
+      color: Colors.red
+  ),];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -114,17 +122,8 @@ class _VSJQuizState extends State<VSJQuiz> {
         ),
        Row
          (
-children:<Widget>
-           [
-  Icon(
-    Icons.check,
-    color: Colors.green,
-  ),
-  Icon(
-    Icons.close,
-    color: Colors.red,
-  ),
-]
+children:scores,
+
        ),
       ],
     );
