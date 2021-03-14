@@ -52,15 +52,35 @@ class VSJQuiz extends StatefulWidget {
 }
 
 class _VSJQuizState extends State<VSJQuiz> {
-  List<Widget> scores=[
-    Icon(
-    Icons.check,
-    color: Colors.green
-  )
-    ,Icon(
-      Icons.close,
-      color: Colors.red
-  ),];
+
+
+
+
+  List<Widget> scores=[];
+
+  void addResult(bool b)
+  {
+    //scores.clear();
+    if(b)
+      {
+        scores.add(
+
+            Icon(
+                Icons.check,
+                color: Colors.green
+            )
+        );
+      }
+    else {
+      scores.add(
+
+          Icon(
+              Icons.close,
+              color: Colors.red
+          )
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -98,7 +118,10 @@ class _VSJQuizState extends State<VSJQuiz> {
               ),
               onPressed: () {
                 print("Submitted True");
-              },
+                setState(() {
+              addResult(true);
+                });
+               }
             ),
           ),
         ),
@@ -116,6 +139,9 @@ class _VSJQuizState extends State<VSJQuiz> {
               ),
               onPressed: () {
                 print("Submitted False");
+                setState(() {
+                 addResult(false);
+                });
               },
             ),
           ),
