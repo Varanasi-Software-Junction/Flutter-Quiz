@@ -53,15 +53,40 @@ class VSJQuiz extends StatefulWidget {
 
 class _VSJQuizState extends State<VSJQuiz> {
 
-
-
-
+String currentquestiontext="Press any button to start the quiz";
+int questionno=-1;
+List<Question> questions=[new Question("Java is a language. T/F",true),new Question("Java is not a language. T/F",false)];
+Question currentquestion;
   List<Widget> scores=[];
-
+void setQuestion(bool b)
+{
+  //questionno=-1;
+  if(questionno>=questions.length-1)
+    {
+     currentquestiontext="Questions Over" ;
+     return;
+    }
+  if(questionno==-1)
+    {
+      questionno++;
+      currentquestion=questions[questionno];
+      currentquestiontext=currentquestion.question;
+    }
+  else
+      {
+        addResult(b);
+        questionno++;
+        if(questionno<=questions.length-1) {
+          currentquestion = questions[questionno];
+          currentquestiontext = currentquestion.question;
+        }
+      }
+}
   void addResult(bool b)
   {
+    bool iscorrect=b==currentquestion.correctanswer;
     //scores.clear();
-    if(b)
+    if(iscorrect)
       {
         scores.add(
 
@@ -93,7 +118,7 @@ class _VSJQuizState extends State<VSJQuiz> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'Question Will Come Here',
+                currentquestiontext,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -119,7 +144,9 @@ class _VSJQuizState extends State<VSJQuiz> {
               onPressed: () {
                 print("Submitted True");
                 setState(() {
-              addResult(true);
+
+             // addResult(true);
+              setQuestion(true);
                 });
                }
             ),
@@ -140,7 +167,9 @@ class _VSJQuizState extends State<VSJQuiz> {
               onPressed: () {
                 print("Submitted False");
                 setState(() {
-                 addResult(false);
+
+                // addResult(false);
+                 setQuestion(false);
                 });
               },
             ),
@@ -153,5 +182,15 @@ children:scores,
        ),
       ],
     );
+  }
+}
+class Question
+{
+  String question;
+  bool correctanswer;
+  Question(String question,bool correctanswer)
+  {
+    this.question=question;
+    this.correctanswer=correctanswer;
   }
 }
