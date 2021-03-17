@@ -55,25 +55,43 @@ class _VSJQuizState extends State<VSJQuiz> {
 
 String currentquestiontext="Press any button to start the quiz";
 int questionno=-1;
-List<Question> questions=[new Question("Java is a language. T/F",true),new Question("Java is not a language. T/F",false)];
+int correctanswers=0;
+bool isTestOver=false;
+List<Question> questions=[
+  new Question("C is a programming language? T/F",true),
+  new Question("C++ is not an object oriented language.. T/F",false),
+  new Question("Python has dictionary.. T/F",true),
+  new Question("Hukulganj is the capital of Japan T/F",false)
+];
 Question currentquestion;
   List<Widget> scores=[];
 void setQuestion(bool b)
 {
+  //isTestOver=false;
   //questionno=-1;
+  //scores.clear();
+
+if (isTestOver)
+  return;
+
+
+  if(questionno==-1)
+  {
+    questionno++;
+    currentquestion=questions[questionno];
+    currentquestiontext=currentquestion.question;
+    return;
+  }
+
   if(questionno>=questions.length-1)
     {
-     currentquestiontext="Questions Over" ;
+
+      addResult(b);
+     currentquestiontext="Questions Over. Correct answers = $correctanswers" ;
+     isTestOver=true;
      return;
     }
-  if(questionno==-1)
-    {
-      questionno++;
-      currentquestion=questions[questionno];
-      currentquestiontext=currentquestion.question;
-    }
-  else
-      {
+
         addResult(b);
         questionno++;
         if(questionno<=questions.length-1) {
@@ -81,13 +99,14 @@ void setQuestion(bool b)
           currentquestiontext = currentquestion.question;
         }
       }
-}
+
   void addResult(bool b)
   {
     bool iscorrect=b==currentquestion.correctanswer;
     //scores.clear();
     if(iscorrect)
       {
+        correctanswers++;
         scores.add(
 
             Icon(
