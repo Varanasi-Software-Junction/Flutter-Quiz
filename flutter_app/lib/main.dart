@@ -11,25 +11,30 @@ class VSJQuizApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.teal,
-          title: Card(
-              child: Text(
-            "Quiz App",
-            style: TextStyle(
-              fontSize: 40,
-              fontWeight: FontWeight.bold,
+      home: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Scaffold(
+            appBar: AppBar(
               backgroundColor: Colors.teal,
+              title: Card(
+                  child: Text(
+                    "Quiz App",
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      backgroundColor: Colors.teal,
+                    ),
+                  )),
+              centerTitle: true,
             ),
-          )),
-          centerTitle: true,
-        ),
-        backgroundColor: Colors.grey.shade900,
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
-            child: VSJQuiz(),
+            backgroundColor: Colors.grey.shade900,
+            body: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child: VSJQuiz(),
+              ),
+            ),
           ),
         ),
       ),
@@ -53,7 +58,7 @@ class _VSJQuizState extends State<VSJQuiz> {
     new Question("Python has dictionary.. T/F", true),
     new Question("Hukulganj is the capital of Japan T/F", false)
   ];
-  Question currentquestion;
+  Question? currentquestion;
   List<Widget> scores = [];
 
   void setQuestion(bool b) {
@@ -66,7 +71,7 @@ class _VSJQuizState extends State<VSJQuiz> {
     if (questionno == -1) {
       questionno++;
       currentquestion = questions[questionno];
-      currentquestiontext = currentquestion.question;
+      currentquestiontext = currentquestion!.question;
       return;
     }
 
@@ -81,12 +86,12 @@ class _VSJQuizState extends State<VSJQuiz> {
     questionno++;
     if (questionno <= questions.length - 1) {
       currentquestion = questions[questionno];
-      currentquestiontext = currentquestion.question;
+      currentquestiontext = currentquestion!.question;
     }
   }
 
   void addResult(bool b) {
-    bool iscorrect = b == currentquestion.correctAnswer;
+    bool iscorrect = b == currentquestion!.correctAnswer;
     //scores.clear();
     if (iscorrect) {
       correctanswers++;
@@ -121,7 +126,7 @@ class _VSJQuizState extends State<VSJQuiz> {
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(15.0),
-            child:ElevatedButton(
+            child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: Colors.green,
                   minimumSize: const Size.fromHeight(50),
@@ -176,8 +181,8 @@ class _VSJQuizState extends State<VSJQuiz> {
 }
 
 class Question {
-  String question;
-  bool correctAnswer;
+  String question = "";
+  bool correctAnswer = false;
 
   Question(String question, bool correctAnswer) {
     this.question = question;
