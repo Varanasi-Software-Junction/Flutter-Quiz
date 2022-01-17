@@ -10,24 +10,21 @@ class VSJQuizApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-
         appBar: AppBar(
           backgroundColor: Colors.teal,
           title: Card(
               child: Text(
-                "Quiz App",
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  backgroundColor: Colors.teal,
-                ),
-              )),
+            "Quiz App",
+            style: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+              backgroundColor: Colors.teal,
+            ),
+          )),
           centerTitle: true,
         ),
-
-
-
         backgroundColor: Colors.grey.shade900,
         body: SafeArea(
           child: Padding(
@@ -40,91 +37,65 @@ class VSJQuizApp extends StatelessWidget {
   }
 }
 
-
-
-
-
-
-
 class VSJQuiz extends StatefulWidget {
   @override
   _VSJQuizState createState() => _VSJQuizState();
 }
 
 class _VSJQuizState extends State<VSJQuiz> {
+  String currentquestiontext = "Press any button to start the quiz";
+  int questionno = -1;
+  int correctanswers = 0;
+  bool isTestOver = false;
+  List<Question> questions = [
+    new Question("C is a programming language? T/F", true),
+    new Question("C++ is not an object oriented language.. T/F", false),
+    new Question("Python has dictionary.. T/F", true),
+    new Question("Hukulganj is the capital of Japan T/F", false)
+  ];
+  Question currentquestion;
+  List<Widget> scores = [];
 
-String currentquestiontext="Press any button to start the quiz";
-int questionno=-1;
-int correctanswers=0;
-bool isTestOver=false;
-List<Question> questions=[
-  new Question("C is a programming language? T/F",true),
-  new Question("C++ is not an object oriented language.. T/F",false),
-  new Question("Python has dictionary.. T/F",true),
-  new Question("Hukulganj is the capital of Japan T/F",false)
-];
-Question currentquestion;
-  List<Widget> scores=[];
-void setQuestion(bool b)
-{
-  //isTestOver=false;
-  //questionno=-1;
-  //scores.clear();
-
-if (isTestOver)
-  return;
-
-
-  if(questionno==-1)
-  {
-    questionno++;
-    currentquestion=questions[questionno];
-    currentquestiontext=currentquestion.question;
-    return;
-  }
-
-  if(questionno>=questions.length-1)
-    {
-
-      addResult(b);
-     currentquestiontext="Questions Over. Correct answers = $correctanswers" ;
-     isTestOver=true;
-     return;
-    }
-
-        addResult(b);
-        questionno++;
-        if(questionno<=questions.length-1) {
-          currentquestion = questions[questionno];
-          currentquestiontext = currentquestion.question;
-        }
-      }
-
-  void addResult(bool b)
-  {
-    bool iscorrect=b==currentquestion.correctanswer;
+  void setQuestion(bool b) {
+    //isTestOver=false;
+    //questionno=-1;
     //scores.clear();
-    if(iscorrect)
-      {
-        correctanswers++;
-        scores.add(
 
-            Icon(
-                Icons.check,
-                color: Colors.green
-            )
-        );
-      }
-    else {
-      scores.add(
+    if (isTestOver) return;
 
-          Icon(
-              Icons.close,
-              color: Colors.red
-          )
-      );
+    if (questionno == -1) {
+      questionno++;
+      currentquestion = questions[questionno];
+      currentquestiontext = currentquestion.question;
+      return;
+    }
+
+    if (questionno >= questions.length - 1) {
+      addResult(b);
+      currentquestiontext = "Questions Over. Correct answers = $correctanswers";
+      isTestOver = true;
+      return;
+    }
+
+    addResult(b);
+    questionno++;
+    if (questionno <= questions.length - 1) {
+      currentquestion = questions[questionno];
+      currentquestiontext = currentquestion.question;
     }
   }
+
+  void addResult(bool b) {
+    bool iscorrect = b == currentquestion.correctAnswer;
+    //scores.clear();
+    if (iscorrect) {
+      correctanswers++;
+      scores.add(Icon(Icons.check, color: Colors.green));
+    } else {
+      scores.add(Icon(Icons.close, color: Colors.red));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -150,32 +121,35 @@ if (isTestOver)
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(15.0),
-            child: FlatButton(
-              textColor: Colors.white,
-              color: Colors.green,
-              child: Text(
-                'True',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
+            child:ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                  minimumSize: const Size.fromHeight(50),
                 ),
-              ),
-              onPressed: () {
-                print("Submitted True");
-                setState(() {
-
-             // addResult(true);
-              setQuestion(true);
-                });
-               }
-            ),
+                child: Text(
+                  'True',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                  ),
+                ),
+                onPressed: () {
+                  print("Submitted True");
+                  setState(() {
+                    // addResult(true);
+                    setQuestion(true);
+                  });
+                }),
           ),
         ),
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(15.0),
-            child: FlatButton(
-              color: Colors.red,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red,
+                minimumSize: const Size.fromHeight(50),
+              ),
               child: Text(
                 'False',
                 style: TextStyle(
@@ -186,30 +160,27 @@ if (isTestOver)
               onPressed: () {
                 print("Submitted False");
                 setState(() {
-
-                // addResult(false);
-                 setQuestion(false);
+                  // addResult(false);
+                  setQuestion(false);
                 });
               },
             ),
           ),
         ),
-       Row
-         (
-children:scores,
-
-       ),
+        Row(
+          children: scores,
+        ),
       ],
     );
   }
 }
-class Question
-{
+
+class Question {
   String question;
-  bool correctanswer;
-  Question(String question,bool correctanswer)
-  {
-    this.question=question;
-    this.correctanswer=correctanswer;
+  bool correctAnswer;
+
+  Question(String question, bool correctAnswer) {
+    this.question = question;
+    this.correctAnswer = correctAnswer;
   }
 }
